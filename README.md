@@ -15,6 +15,7 @@ Este repositório tem como objetivo disponibilizar conteúdo para o componente d
 
 # 🗂️ Estrutura do Repositório
 
+```text
 📦 programacao-de-aplicativos-mobile-flutter-ds-1-2026
 ├── 📁 aulas/
 │   ├── 📄
