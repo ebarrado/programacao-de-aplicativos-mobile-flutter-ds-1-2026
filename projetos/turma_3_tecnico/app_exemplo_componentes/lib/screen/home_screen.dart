@@ -30,10 +30,12 @@ class _HomeScreenState extends State<HomeScreen> {
           IconButton(
             tooltip: 'Próxima Página',
             onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => ContatoScreen()),
-              );
+             Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder:(context) => ContatoScreen()
+                )
+             );
             },
             icon: Icon(Icons.navigate_next),
           ),
@@ -57,6 +59,50 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ],
       ),
+      //body
+      //----///
+      body: Padding(
+        padding: const EdgeInsets.all(20.0),
+        child: Column(
+         children: [
+          Row(
+            children: [
+              Icon(Icons.star, color: Colors.green[500]),
+              Icon(Icons.star, color: Colors.green[500]),
+              Icon(Icons.star, color: Colors.green[500]),
+              Icon(Icons.star, color: Colors.black),
+              Icon(Icons.star, color: Colors.black),
+              
+            ],
+
+          )
+         ],
+        
+        ),
+      ),
+      //BottomNavigatonBar
+     bottomNavigationBar: BottomNavigationBar(
+      selectedItemColor: Colors.black,
+      unselectedItemColor: Colors.amber,
+      type: BottomNavigationBarType.shifting,
+      items:[
+        BottomNavigationBarItem(        
+          icon: Icon(Icons.home),
+          label: 'Home',
+          backgroundColor:const Color.fromARGB(255, 43, 170, 170),
+          ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.person),
+          label: 'Perfil',
+          backgroundColor:const Color.fromARGB(255, 43, 170, 170),
+          ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.set_meal_rounded),
+          label: 'Configuração',
+          backgroundColor:const Color.fromARGB(255, 43, 170, 170),
+          ),
+      ],
+      ) ,
     );
   }
 }
