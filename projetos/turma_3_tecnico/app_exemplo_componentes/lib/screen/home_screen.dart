@@ -1,5 +1,5 @@
 //importe Material
-import 'package:app_exemplo_componentes/screen/contato_scren.dart';
+import 'package:app_exemplo_componentes/screen/contato_screen.dart';
 import 'package:flutter/material.dart';
 
 //class - statells - statefull
