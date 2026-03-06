@@ -33,71 +33,78 @@ class _ProdutoScreenState extends State<ProdutoScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
-            Column(            
-              children: [
-                Text("Nome Produto"),
-                Text("Descrição do Produto"),
-                Row(
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Icon(Icons.star, color: Colors.green[500]),
-                        Icon(Icons.star, color: Colors.green[500]),
-                        Icon(Icons.star, color: Colors.green[500]),
-                        Icon(Icons.star, color: Colors.black),
-                        Icon(Icons.star, color: Colors.black),
-                      ],
+            Flexible(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    "Notebook 15.6",
+                    style: TextStyle(
+                      color: const Color.fromARGB(255, 10, 62, 97),
+                      fontFamily: "Arial",
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
                     ),
-                    Text("Classificação"),
-                  ],
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(20.0),
-                      child: Column(
+                  ),
+                  SizedBox(height: 10),
+                  Text(
+                    "Notebook, Windows 11 Home, Tela 15,6 Pol HD, Celeron N4020C, Memória 4GB/128GB, Microsoft 365, Ultra - UB261",
+                    style: TextStyle(
+                      fontFamily: "Verdana",
+                      fontSize: 14,
+                      fontWeight: FontWeight.w100
+                    ),
+                  ),
+                  Row(
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Icon(
-                            Icons.attach_money
-                          ),
-                          Text("R\$ 290,99")
+                          Icon(Icons.star, color: Colors.green[500]),
+                          Icon(Icons.star, color: Colors.green[500]),
+                          Icon(Icons.star, color: Colors.green[500]),
+                          Icon(Icons.star, color: Colors.black),
+                          Icon(Icons.star, color: Colors.black),
                         ],
                       ),
-                    ), 
-                    Padding(
-                      padding: const EdgeInsets.all(20.0),
-                      child: Column(
-                        children: [
-                          Icon(
-                            Icons.production_quantity_limits
-                          ),
-                          Text("Qtd: 10")
-                        ],
+                      Text("Classificação"),
+                    ],
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(20.0),
+                        child: Column(
+                          children: [
+                            Icon(Icons.attach_money),
+                            Text("R\$ 290,99"),
+                          ],
+                        ),
                       ),
-                    ), 
-                    Column(
-                      children: [
-                        Icon(
-                          Icons.shopping_cart
-                        ), 
-                        Text("Comprar")
-                      ],
-                    ),
-                    ]),
-              ],
+                      Padding(
+                        padding: const EdgeInsets.all(20.0),
+                        child: Column(
+                          children: [
+                            Icon(Icons.production_quantity_limits),
+                            Text("Qtd: 10"),
+                          ],
+                        ),
+                      ),
+                      Column(
+                        children: [Icon(Icons.shopping_cart), Text("Comprar")],
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ),
-            Container(
-               width: 350,
-                height: 200, 
-              color: Colors.amber,
-              child: Image.asset(
-                "notebook.jpg",
-                fit: BoxFit.fill,
-               
-            
-              
+            Flexible(
+              child: Container(
+                width: 350,
+                height: 200,
+                color: Colors.amber,
+                child: Image.asset("notebook.jpg", fit: BoxFit.fill),
               ),
             ),
           ],
