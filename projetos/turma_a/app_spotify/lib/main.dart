@@ -1,4 +1,4 @@
-import 'package:app_spotify/spotify_screem.dart';
+import 'spotify_screem.dart';
 import 'package:flutter/material.dart';
 
 void main() {

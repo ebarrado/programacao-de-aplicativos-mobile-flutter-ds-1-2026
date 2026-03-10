@@ -1,5 +1,5 @@
 //importe Material
-import 'package:app_exemplo_componentes/screen/produto_screen.dart';
+import 'package:app_exemplo_componentes/screen/produto_teste.dart';
 import 'package:flutter/material.dart';
 
 //class - statells - statefull
@@ -33,7 +33,7 @@ class _HomeScreenState extends State<HomeScreen> {
              Navigator.push(
               context,
               MaterialPageRoute(
-                builder:(context) => ProdutoScreen()
+                builder:(context) => ProdutoScrenTeste()
                 )
              );
             },

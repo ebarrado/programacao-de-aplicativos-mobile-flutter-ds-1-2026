@@ -33,7 +33,7 @@ class _ProdutoScreenState extends State<ProdutoScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
-            Flexible(
+            Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -57,9 +57,7 @@ class _ProdutoScreenState extends State<ProdutoScreen> {
                   ),
                   Row(
                     children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
+                    Column(children: [
                           Icon(Icons.star, color: Colors.green[500]),
                           Icon(Icons.star, color: Colors.green[500]),
                           Icon(Icons.star, color: Colors.green[500]),
@@ -71,7 +69,7 @@ class _ProdutoScreenState extends State<ProdutoScreen> {
                     ],
                   ),
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       Padding(
                         padding: const EdgeInsets.all(20.0),
@@ -99,12 +97,12 @@ class _ProdutoScreenState extends State<ProdutoScreen> {
                 ],
               ),
             ),
-            Flexible(
+            Expanded(
               child: Container(
                 width: 350,
                 height: 200,
                 color: Colors.amber,
-                child: Image.asset("notebook.jpg", fit: BoxFit.fill),
+                child: Image.asset("notebook.jpg", fit: BoxFit.contain),
               ),
             ),
           ],
