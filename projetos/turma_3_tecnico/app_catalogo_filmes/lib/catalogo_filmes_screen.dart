@@ -30,61 +30,114 @@ class _CatalogoFilmeScreenState extends State<CatalogoFilmeScreen> {
         ],
         leading: Icon(Icons.menu, color: Colors.white),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(1.0),
+      body: Padding(     
+         padding: const EdgeInsets.all(8),
+
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Container(
-                color: const Color.fromARGB(255, 221, 220, 218),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Column(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.all(5.0),
-                          child: Image.asset(
-                            "implacavel.jpg",
-                            height: 200,
-                            width: 100,
-                          ),
-                        ),
-                      ],
+            // FILME 1
+            Container(
+              margin: const EdgeInsets.only(bottom: 10),
+              color: const Color.fromARGB(255, 221, 220, 218),
+
+              child: Row(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(5),
+                    child: Image.asset(
+                      "implacavel.jpg",
+                      height: 100,
+                      width: 80,
+                      fit: BoxFit.cover,
                     ),
-                    Expanded(
+                  ),
+
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.all(8),
+
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Container(
-                            color: Colors.amber,
-                            child: Row(children: [Text("Nome do Filme")]),
+                        children: const [
+                          Text(
+                            "Nome do Filme",
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
-                          SizedBox(height: 10),
-                          Row(
-                            children: [
-                              Text(
-                                "Implacáve (Avengement, 2019), estrelado por Scott Adkins, é um filme de ação e vingança focado em Cain Burgess, um criminoso que foge durante uma saída temporária da prisão. Ele busca vingar-se das pessoas que o transformaram em um assassin",
-                              ),
-                            ],
+
+                          SizedBox(height: 5),
+
+                          Text(
+                            "Implacável (Avengement, 2019), estrelado por Scott Adkins.",
+                            maxLines: 3,
+                            overflow: TextOverflow.ellipsis,
                           ),
                         ],
                       ),
                     ),
-                    Spacer(),
-                    Expanded(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [Icon(Icons.arrow_right)],
-                      ),
-                    ),
-                  ],
-                ),
+                  ),
+
+                  const Padding(
+                    padding: EdgeInsets.only(right: 10),
+                    child: Icon(Icons.arrow_right),
+                  ),
+                ],
               ),
             ),
-            SizedBox(height: 10),
+
+            // FILME 2
+            Container(
+              margin: const EdgeInsets.only(bottom: 10),
+              color: const Color.fromARGB(255, 221, 220, 218),
+
+              child: Row(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(5),
+                    child: Image.asset(
+                      "liam_neeson.jpg",
+                      height: 100,
+                      width: 80,
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.all(8),
+
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: const [
+                          Text(
+                            "Outro Filme",
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+
+                          SizedBox(height: 5),
+
+                          Text(
+                            "Descrição do segundo filme.",
+                            maxLines: 3,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+
+                  const Padding(
+                    padding: EdgeInsets.only(right: 10),
+                    child: Icon(Icons.arrow_right),
+                  ),
+                ],
+              ),
+            ),
           ],
         ),
       ),
