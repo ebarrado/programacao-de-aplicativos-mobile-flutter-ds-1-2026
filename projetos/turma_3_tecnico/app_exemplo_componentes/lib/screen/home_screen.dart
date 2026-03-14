@@ -18,24 +18,23 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "AppBar",
+          "Home",
           style: TextStyle(
             fontSize: 18,
             fontWeight: FontWeight.bold,
             fontFamily: "Arial",
           ),
         ),
-        backgroundColor: const Color.fromARGB(255, 43, 170, 170),
+        backgroundColor: const Color.fromARGB(255, 5, 5, 5),
+        foregroundColor: const Color.fromARGB(255, 255, 255, 255),
         actions: [
           IconButton(
             tooltip: 'Próxima Página',
             onPressed: () {
-             Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder:(context) => ProdutoScreen()
-                )
-             );
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => ProdutoScreen()),
+              );
             },
             icon: Icon(Icons.navigate_next),
           ),
@@ -64,45 +63,43 @@ class _HomeScreenState extends State<HomeScreen> {
       body: Padding(
         padding: const EdgeInsets.all(20.0),
         child: Column(
-         children: [
-          Row(
-            children: [
-              Icon(Icons.star, color: Colors.green[500]),
-              Icon(Icons.star, color: Colors.green[500]),
-              Icon(Icons.star, color: Colors.green[500]),
-              Icon(Icons.star, color: Colors.black),
-              Icon(Icons.star, color: Colors.black),
-              
-            ],
-
-          )
-         ],
-        
+          children: [
+            Row(
+              children: [
+                Icon(Icons.star, color: Colors.green[500]),
+                Icon(Icons.star, color: Colors.green[500]),
+                Icon(Icons.star, color: Colors.green[500]),
+                Icon(Icons.star, color: Colors.black),
+                Icon(Icons.star, color: Colors.black),
+              ],
+            ),
+          ],
         ),
       ),
       //BottomNavigatonBar
-     bottomNavigationBar: BottomNavigationBar(
-      selectedItemColor: Colors.black,
-      unselectedItemColor: Colors.amber,
-      type: BottomNavigationBarType.shifting,
-      items:[
-        BottomNavigationBarItem(        
-          icon: Icon(Icons.home),
-          label: 'Home',
-          backgroundColor:const Color.fromARGB(255, 43, 170, 170),
+      bottomNavigationBar: BottomNavigationBar(
+        backgroundColor: const Color.fromARGB(255, 0, 0, 0),
+        selectedItemColor: const Color.fromARGB(255, 170, 4, 4),
+        unselectedItemColor: Colors.white,
+        type: BottomNavigationBarType.fixed,
+        items: [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'Home',
+            
           ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.person),
-          label: 'Perfil',
-          backgroundColor:const Color.fromARGB(255, 43, 170, 170),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person),
+            label: 'Perfil',
+            
           ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.set_meal_rounded),
-          label: 'Configuração',
-          backgroundColor:const Color.fromARGB(255, 43, 170, 170),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.set_meal_rounded),
+            label: 'Configuração',
+            
           ),
-      ],
-      ) ,
+        ],
+      ),
     );
   }
 }
