@@ -1,3 +1,4 @@
+import 'package:app_spotify/play_list_sreen.dart';
 import 'package:flutter/material.dart';
 
 class SpotifyScreem extends StatelessWidget {
@@ -22,7 +23,13 @@ class SpotifyScreem extends StatelessWidget {
           SizedBox(width: 15),
           IconButton(
             onPressed: () {
-              print("Botão Cadastrar pressionado");
+             // print("Botão Cadastrar pressionado");
+             Navigator.push(
+              context, 
+              MaterialPageRoute(
+                builder: (context) => PlayListSreen()
+                )
+              );
             },
             icon: Icon(Icons.add, color: Colors.white, size: 36),
           ),
@@ -71,49 +78,35 @@ class SpotifyScreem extends StatelessWidget {
               
 
               //Lista de Musicas
-              Container(
-                
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    ListTile(
-                      leading: Icon(Icons.music_note, color: Colors.white),
-                      title: Text(
-                        "Minha PlayList 1",
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      subtitle: Text(
-                        "Artista Desconhecido",
-                        style: TextStyle(color: Colors.grey),
-                      ),
-                    ),
-                  ],
+              ListTile(
+                leading: Icon(Icons.music_note, color: Colors.white),
+                title: Text(
+                  "Minha PlayList 1",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                subtitle: Text(
+                  "Artista Desconhecido",
+                  style: TextStyle(color: Colors.grey),
                 ),
               ),
-              Column(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  ListTile(
-                    leading: Icon(Icons.music_note_rounded, color: Colors.white),
-                    title: Text(
-                      "Pop Internacional",
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                      ),
-                    ),
-                    subtitle: Text(
-                      "Hits Pop",
-                      style: TextStyle(color: Colors.grey),
-                    ),
+              ListTile(
+                leading: Icon(Icons.music_note_rounded, color: Colors.white),
+                title: Text(
+                  "Pop Internacional",
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
                   ),
-                ],
+                ),
+                subtitle: Text(
+                  "Hits Pop",
+                  style: TextStyle(color: Colors.grey),
+                ),
               ),
 
               SizedBox(height: 10),
