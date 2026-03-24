@@ -68,37 +68,52 @@ class SpotifyScreem extends StatelessWidget {
                 ],
               ),
               SizedBox(height: 2),
+              
 
               //Lista de Musicas
-              ListTile(
-                leading: Icon(Icons.music_note, color: Colors.white),
-                title: Text(
-                  "Minha PlayList 1",
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                subtitle: Text(
-                  "Artista Desconhecido",
-                  style: TextStyle(color: Colors.grey),
+              Container(
+                
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    ListTile(
+                      leading: Icon(Icons.music_note, color: Colors.white),
+                      title: Text(
+                        "Minha PlayList 1",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      subtitle: Text(
+                        "Artista Desconhecido",
+                        style: TextStyle(color: Colors.grey),
+                      ),
+                    ),
+                  ],
                 ),
               ),
-              ListTile(
-                leading: Icon(Icons.music_note_rounded, color: Colors.white),
-                title: Text(
-                  "Pop Internacional",
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
+              Column(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  ListTile(
+                    leading: Icon(Icons.music_note_rounded, color: Colors.white),
+                    title: Text(
+                      "Pop Internacional",
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
+                    ),
+                    subtitle: Text(
+                      "Hits Pop",
+                      style: TextStyle(color: Colors.grey),
+                    ),
                   ),
-                ),
-                subtitle: Text(
-                  "Hits Pop",
-                  style: TextStyle(color: Colors.grey),
-                ),
+                ],
               ),
 
               SizedBox(height: 10),
@@ -121,7 +136,7 @@ class SpotifyScreem extends StatelessWidget {
                       width: 120,
                       height: 120,
                       child: Image.network(
-                        "https://portalpopline.com.br/wp-content/uploads/2025/04/albuns-artistas-pop-2025.jpg",
+                        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQsCkVw0o4_eFbiIjmhLFEQ4g7SnOwwqKv_pg&s",
                         fit: BoxFit.cover,
                       ),
                     ),
@@ -140,6 +155,123 @@ class SpotifyScreem extends StatelessWidget {
                       height: 120,
                       child: Image.network(
                         "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSsHO5TiAHo5fD-kzMqKF0Xs5NF6PBuyZ5Gbw&s",
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                    Container(
+                      margin: EdgeInsets.only(left: 16),
+                      width: 120,
+                      height: 120,
+                      child: Image.network(
+                        "https://portalpopline.com.br/wp-content/uploads/2025/04/albuns-artistas-pop-2025.jpg",
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(height: 10),
+              //Lista de Albuns com Scroll
+              Text(
+                "Albuns Internacionais",
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                ),
+              ),
+              SizedBox(height: 10),
+              SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  children: [
+                    Container(
+                      margin: EdgeInsets.only(left: 16),
+                      width: 120,
+                      height: 120,
+                      child: Image.network(
+                        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTgITL3uhopZpAoaytjQbrvxSXbxoFcCEvAMQ&s",
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                    Container(
+                      margin: EdgeInsets.only(left: 16),
+                      width: 120,
+                      height: 120,
+                      child: Image.network(
+                        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSLur6dGKlGkQE2bk2SNbBB6T2wNkCTDYNrLg&s",
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                    Container(
+                      margin: EdgeInsets.only(left: 16),
+                      width: 120,
+                      height: 120,
+                      child: Image.network(
+                        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRRyj8nEPewGzkBzPa-9oNnx4dH4lAow40b2w&s",
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                    Container(
+                      margin: EdgeInsets.only(left: 16),
+                      width: 120,
+                      height: 120,
+                      child: Image.network(
+                        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTBFdm9-ZhNDguQOAFRWljR2mnVqNRA-iMWGg&s",
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(height: 10),
+              //Lista de Albuns com Scroll
+              Text(
+                "Albuns Pop Rock",
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                ),
+              ),
+              SizedBox(height: 10),
+              SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  children: [
+                    Container(
+                      margin: EdgeInsets.only(left: 16),
+                      width: 120,
+                      height: 120,
+                      child: Image.network(
+                        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTZoWdYB9uDkZgCknxXCnFGYy0eseCm67Cb9Q&s",
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                    Container(
+                      margin: EdgeInsets.only(left: 16),
+                      width: 120,
+                      height: 120,
+                      child: Image.network(
+                        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQG8kLv1tBCWTBeb-w6-sxOqUUZ1zMloc_JNA&s",
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                    Container(
+                      margin: EdgeInsets.only(left: 16),
+                      width: 120,
+                      height: 120,
+                      child: Image.network(
+                        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRmuz59JVdS9bY8mBwcYZX7_QZ2R7w6UEdO_A&s",
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                    Container(
+                      margin: EdgeInsets.only(left: 16),
+                      width: 120,
+                      height: 120,
+                      child: Image.network(
+                        "https://down-br.img.susercontent.com/file/br-11134207-7qukw-li9bcqvk9qut85",
                         fit: BoxFit.cover,
                       ),
                     ),
