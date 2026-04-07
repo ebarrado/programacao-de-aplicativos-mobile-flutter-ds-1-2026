@@ -1,87 +1,117 @@
-//importe Material
+import 'package:app_exemplo_componentes/screen/cadastro_produto_screen.dart';
+import 'package:app_exemplo_componentes/services/produto_service.dart';
 import 'package:app_exemplo_componentes/widgets/produto_widget.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
-//class - statells - statefull
-//comdando na ide - stl
-
-class ProdutoScreen extends StatefulWidget {
+class ProdutoScreen extends StatelessWidget {
   const ProdutoScreen({super.key});
 
-  @override
-  State<ProdutoScreen> createState() => _ProdutoScreenState();
-}
+  int _toInt(dynamic value) {
+    if (value == null) return 0;
+    if (value is int) return value;
+    if (value is double) return value.toInt();
+    if (value is String) return int.tryParse(value) ?? 0;
+    return 0;
+  }
 
-class _ProdutoScreenState extends State<ProdutoScreen> {
+  double _toDouble(dynamic value) {
+    if (value == null) return 0.0;
+    if (value is int) return value.toDouble();
+    if (value is double) return value;
+    if (value is String) return double.tryParse(value) ?? 0.0;
+    return 0.0;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          "Produtos",
+        title: const Text(
+          'Produtos',
           style: TextStyle(
             fontSize: 18,
             fontWeight: FontWeight.bold,
-            fontFamily: "Arial",
+            fontFamily: 'Arial',
           ),
         ),
-        backgroundColor: const Color.fromARGB(255, 0, 0, 0),
-        foregroundColor: const Color.fromARGB(255, 255, 255, 255),
-        actions: [IconButton(onPressed: () {}, icon: Icon(Icons.more_vert))],
+        backgroundColor: Colors.black,
+        foregroundColor: Colors.white,
+        actions: [
+          IconButton(
+            tooltip: 'Cadastrar produto',
+            icon: const Icon(Icons.add),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const CadastroProdutoScreen(),
+                ),
+              );
+            },
+          ),
+        ],
       ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            children: [
-              ProdutoWidget(
-                nome: "Notebook 15.6",
-                descricao:
-                    "Notebook, Windows 11 Home, Tela 15,6 Pol HD, Celeron N4020C, Memória 4GB/128GB, Microsoft 365, Ultra - UB261",
-                quantidade: 20,
-                valor: 3500.89,
-                imagem: "notebook.jpg",
-              ),
-              SizedBox(height: 10),
-              ProdutoWidget(
-                nome: "Mochila Masculina Impermeáve",
-                descricao:
-                    "Mochila Escolar Universitária Sport Resistente. Compartimento para Notebook 15/16 POL.Ideal para: Faculdade, Escola, Trabalho, Viagens.",
-                quantidade: 10,
-                valor: 250.99,
-                imagem: "mochila.jpg",
-              ),
-              SizedBox(height: 10),
-              ProdutoWidget(
-                nome:
-                    "Computador PC Gamer Completo TOB Intel Core i5 SSD 480GB 16GB ",
-                descricao:
-                    "Computador completo com componentes e especificações técnicas superiores à concorrência. Máquina com custo-benefício imbatível.",
-                quantidade: 5,
-                valor: 8980.98,
-                imagem: "pc_game.jpg",
-              ),
-              SizedBox(height: 10),
-              ProdutoWidget(
-                nome: "Impressora Multifuncional EcoTank L3250 Wi-Fi Epson",
-                descricao:
-                    "A Epson EcoTank L3250 é uma impressora multifuncional tanque de tinta 3 em 1 com conexão wireless destinada à famílias, estudantes, e profissionais. Oferece baixo custo de impressão graças ao sistema de EcoTank, que imprime até 4.500 páginas em preto e 7.500 páginas coloridas com cada kit de garrafas de reposição original.",
-                quantidade: 30,
-                valor: 1258.85,
-                imagem: "impressora.jpg",
-              ),
-              SizedBox(height: 10),
-              ProdutoWidget(
-                nome: "Repetidor de Sinal Wifi 2800m 4 Antenas",
-                descricao:
-                    "Aumente o alcance do seu Wi-Fi utilizando o Repetidor de Sinal Wi-Fi e obtenha uma rede rápida e segura. A velocidade de transmissão é de até 600Mbps e em conformidade com o padrão IEEE 802.11n. Seu wi-fi distribuí o sinal para toda a casa ou escritório",
-                quantidade: 2,
-                valor: 650.00,
-                imagem: "repetidor.jpg",
-              ),
-            ],
-          ),
-        ),
+      body: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
+        stream: ProdutoService.listarProdutos(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+
+          if (snapshot.hasError) {
+            return Center(
+              child: Text('Erro ao carregar produtos: ${snapshot.error}'),
+            );
+          }
+
+          if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+            return const Center(
+              child: Text('Nenhum produto cadastrado'),
+            );
+          }
+
+          final produtos = snapshot.data!.docs;
+
+          return ListView.separated(
+            padding: const EdgeInsets.all(6),
+            itemCount: produtos.length,
+            separatorBuilder: (_, __) => const SizedBox(height: 10),
+            itemBuilder: (context, index) {
+              final doc = produtos[index];
+              final produto = doc.data();
+
+              final String nome = produto['nome']?.toString() ?? '';
+              final String descricao = produto['descricao']?.toString() ?? '';
+              final int quantidade = _toInt(produto['quantidade']);
+              final double valor = _toDouble(produto['valor']);
+              final String imagem = produto['imagem']?.toString() ?? '';
+
+              return ProdutoWidget(
+                nome: nome,
+                descricao: descricao,
+                quantidade: quantidade,
+                valor: valor,
+                imagem: imagem,
+              );
+            },
+          );
+        },
+      ),
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: Colors.red,
+        foregroundColor: Colors.white,
+        child: const Icon(Icons.add),
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const CadastroProdutoScreen(),
+            ),
+          );
+        },
       ),
     );
   }

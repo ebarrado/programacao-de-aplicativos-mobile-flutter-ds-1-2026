@@ -103,7 +103,7 @@ class ProdutoWidget extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Image.asset(
+                  Image.network(
                     imagem,
                     height: 100,
                    

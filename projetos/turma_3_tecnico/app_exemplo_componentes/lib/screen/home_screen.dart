@@ -1,5 +1,7 @@
 //importe Material
+import 'package:app_exemplo_componentes/screen/cadastro_produto_screen.dart';
 import 'package:app_exemplo_componentes/screen/produto_screen.dart';
+import 'package:app_exemplo_componentes/widgets/banner_widget.dart';
 import 'package:flutter/material.dart';
 
 //class - statells - statefull
@@ -29,14 +31,14 @@ class _HomeScreenState extends State<HomeScreen> {
         foregroundColor: const Color.fromARGB(255, 255, 255, 255),
         actions: [
           IconButton(
-            tooltip: 'Próxima Página',
+            tooltip: 'CadastrarProduto',
             onPressed: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => ProdutoScreen()),
+                MaterialPageRoute(builder: (context) => CadastroProdutoScreen()),
               );
             },
-            icon: Icon(Icons.navigate_next),
+            icon: Icon(Icons.add_box),
           ),
           IconButton(
             tooltip: 'Pesquisar',
@@ -105,7 +107,7 @@ class _HomeScreenState extends State<HomeScreen> {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),
               child: Container(
-                height: 280,
+                height: 200,
                 width: double.infinity,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(18),
@@ -124,6 +126,73 @@ class _HomeScreenState extends State<HomeScreen> {
                   ],
                 ),
                 child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Row(
+                    children: [
+                      Flexible(
+                        flex: 2,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              "Super Oferta",
+                              style: TextStyle(
+                                color: Colors.white70,
+                                fontSize: 18,
+                              ),
+                            ),
+                            SizedBox(height: 8),
+                            Text(
+                              "Notebook Gamer\n com até 30% OFF",
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 24,
+                              ),
+                            ),
+                            SizedBox(height: 20),
+                            Flexible(
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                              
+                                children: [
+                                  ElevatedButton(
+                                    onPressed: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) => ProdutoScreen(),
+                                        ),
+                                      );
+                                    },
+                                    style: ElevatedButton.styleFrom(
+                                      backgroundColor: Colors.red,
+                                      foregroundColor: Colors.white,
+                                    ),
+                                    child: const Text("Comprar Agora"),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      // 🔹 ESPAÇO ENTRE TEXTO E ÍCONE
+                      SizedBox(width: 10),
+
+                      // 🔹 LADO DIREITO (ÍCONE)
+                      Flexible(
+                        flex: 1,
+                        child: Icon(
+                          Icons.laptop_mac,
+                          size: 90,
+                          color: Colors.amber,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                /* Padding(
                   padding: const EdgeInsets.all(18.0),
                   child: Row(
                     children: [
@@ -176,9 +245,10 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ],
                   ),
-                ),
+                ),*/
               ),
             ),
+
             SizedBox(height: 10),
             Padding(
               padding: const EdgeInsets.all(8.0),
@@ -322,6 +392,14 @@ class _HomeScreenState extends State<HomeScreen> {
                   ],
                 ),
               ),
+            ),
+            SizedBox(height: 10),
+            BannerWidget(
+              titulo: 'Promoção Relâmpago',
+              descricao: 'Smartphones com desconto especial',
+              textoBotao: 'Ver Ofertas',
+              icone: Icons.smartphone,
+              onPressed: () {},
             ),
           ],
         ),
