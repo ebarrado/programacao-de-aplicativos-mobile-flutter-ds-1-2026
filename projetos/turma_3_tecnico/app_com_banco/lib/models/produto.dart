@@ -30,7 +30,7 @@ class Produto {
     return Produto(
       nome: map['nome'] ?? '',
       descricao: map['descricao'] ?? '',
-      quantidade: map['quantidade'] ?? '',
+      quantidade: map['quantidade'] ?? 0,
       valor: (map['valor'] ?? 0).toDouble(),
       imagem: map['imagem']?? '',
     );

@@ -1,13 +1,13 @@
 {
   "project_info": {
-    "project_number": "547438840713",
-    "project_id": "teste-5dc1e",
-    "storage_bucket": "teste-5dc1e.firebasestorage.app"
+    "project_number": "181506422611",
+    "project_id": "techstoren-14ebc",
+    "storage_bucket": "techstoren-14ebc.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:547438840713:android:b9f86259d2d1e435622f58",
+        "mobilesdk_app_id": "1:181506422611:android:24dace9e41e55b98f453a6",
         "android_client_info": {
           "package_name": "com.example.app_com_banco"
         }
@@ -15,7 +15,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyASirvt_yW6dAUcOwEw0xF_rEqCNCVTcGY"
+          "current_key": "AIzaSyDHUueGsVOmEJlZvpFxxdBOjwmoNY9UrpE"
         }
       ],
       "services": {
@@ -26,15 +26,53 @@
     },
     {
       "client_info": {
-        "mobilesdk_app_id": "1:547438840713:android:af7e40d04ec38267622f58",
+        "mobilesdk_app_id": "1:181506422611:android:89403d86a37cd68af453a6",
         "android_client_info": {
-          "package_name": "com.teste"
+          "package_name": "com.example.projeto_firebase"
         }
       },
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyASirvt_yW6dAUcOwEw0xF_rEqCNCVTcGY"
+          "current_key": "AIzaSyDHUueGsVOmEJlZvpFxxdBOjwmoNY9UrpE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:181506422611:android:1a8ba27278902ceef453a6",
+        "android_client_info": {
+          "package_name": "com.example.projeto_forms"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDHUueGsVOmEJlZvpFxxdBOjwmoNY9UrpE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:181506422611:android:e11cc1a7d26730c4f453a6",
+        "android_client_info": {
+          "package_name": "com.techstoren"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDHUueGsVOmEJlZvpFxxdBOjwmoNY9UrpE"
         }
       ],
       "services": {
