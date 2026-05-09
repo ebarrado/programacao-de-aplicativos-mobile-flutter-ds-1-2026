@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:app_com_banco/models/produto.dart';
+import 'package:app_com_banco/service/produto_service.dart';
 
 class CadastrarProdutos extends StatefulWidget {
   const CadastrarProdutos({super.key});
@@ -16,6 +18,8 @@ class _CadastrarProdutosState extends State<CadastrarProdutos> {
   final TextEditingController _quantidadeController = TextEditingController();
   final TextEditingController _valorController = TextEditingController();
   final TextEditingController _imagemController = TextEditingController();
+
+  final ProdutoService _produtoService = ProdutoService();
 
 
   @override
@@ -177,9 +181,7 @@ class _CadastrarProdutosState extends State<CadastrarProdutos> {
                     backgroundColor: Colors.red,
                     foregroundColor: Colors.white,
                   ),
-                  onPressed: (){
-                    print(_nomeController);
-                },
+                  onPressed: _cadastrarProdutos,
                 child:
                 Text("Cadastrar"),
                 )
