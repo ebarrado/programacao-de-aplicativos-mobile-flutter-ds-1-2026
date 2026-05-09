@@ -18,7 +18,7 @@ class Produto {
 
   Map<String, dynamic> toMap() {
     return {
-      'nome': nome,
+      '!12_nome': nome,
       'descricao': descricao,
       'quantidade': quantidade,
       'valor': valor,

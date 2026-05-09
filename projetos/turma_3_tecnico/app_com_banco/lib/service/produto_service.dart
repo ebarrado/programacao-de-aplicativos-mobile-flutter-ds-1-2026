@@ -4,7 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class ProdutoService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  final String _colecao = "produtos";
+  final String _colecao = "......";
 
   //Cadastrar Produtos
 
