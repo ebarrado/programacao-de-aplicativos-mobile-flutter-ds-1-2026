@@ -19,36 +19,5 @@ class LoginController extends ChangeNotifier{
     notifyListeners();
   }
 
-  Future<bool> login({
-    required String email,
-    required String password
-  })async{
-    isLoading = true;
-    errorMessage = null;
-    notifyListeners();
-    //tratamento exceção
-    try{
-      final model = LoginModal(
-      email: email, 
-      password: password, 
-      rememberMe: rememberMe);
-
-      if (!model.isValid){
-        throw Exception('Informe email e senha com o mínimo de 8 caracteres');
-      }
-      await Future.delayed(const Duration(seconds: 1));
-      isLoading = false;
-      notifyListeners();
-
-
-
-    }catch(e){
-      isLoading = false;
-      errorMessage = e.toString().replaceAll('Exception', ',');
-      notifyListeners();
-
-      return false;
-    }
-
-  }
+  
 }
