@@ -1,4 +1,5 @@
 class Produto {
+
   final String? id;
   final String nome;
   final String descricao;
@@ -6,7 +7,6 @@ class Produto {
   final double valor;
   final String imagem;
 
-  // toda classe tem um construtor
   Produto({
     this.id,
     required this.nome,
@@ -17,8 +17,10 @@ class Produto {
   });
 
   Map<String, dynamic> toMap() {
+
     return {
-      '!12_nome': nome,
+
+      'nome': nome,
       'descricao': descricao,
       'quantidade': quantidade,
       'valor': valor,
@@ -26,16 +28,24 @@ class Produto {
     };
   }
 
-  factory Produto.fromMap(Map<String, dynamic> map, String documentId) {
+  factory Produto.fromMap(
+    Map<String, dynamic> map,
+    String documentId,
+  ) {
+
     return Produto(
+
+      id: documentId,
+
       nome: map['nome'] ?? '',
+
       descricao: map['descricao'] ?? '',
+
       quantidade: map['quantidade'] ?? 0,
+
       valor: (map['valor'] ?? 0).toDouble(),
-      imagem: map['imagem']?? '',
+
+      imagem: map['imagem'] ?? '',
     );
   }
-
-  
-
 }

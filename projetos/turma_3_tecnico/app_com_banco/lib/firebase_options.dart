@@ -41,47 +41,47 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyC-uwrTnlYPfVB-bTr-vq2BhUP0Wbw7AXo',
-    appId: '1:181506422611:web:09ad55b6af8cae45f453a6',
-    messagingSenderId: '181506422611',
-    projectId: 'techstoren-14ebc',
-    authDomain: 'techstoren-14ebc.firebaseapp.com',
-    storageBucket: 'techstoren-14ebc.firebasestorage.app',
+    apiKey: 'AIzaSyDwIyYU5lmCx5i8qDYugf_AV4cpBgSWf7Q',
+    appId: '1:851441089572:web:4444f370afeca97c566cb1',
+    messagingSenderId: '851441089572',
+    projectId: 'techstore-produtos',
+    authDomain: 'techstore-produtos.firebaseapp.com',
+    storageBucket: 'techstore-produtos.firebasestorage.app',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyDHUueGsVOmEJlZvpFxxdBOjwmoNY9UrpE',
-    appId: '1:181506422611:android:24dace9e41e55b98f453a6',
-    messagingSenderId: '181506422611',
-    projectId: 'techstoren-14ebc',
-    storageBucket: 'techstoren-14ebc.firebasestorage.app',
+    apiKey: 'AIzaSyA34EnF29ZjLJfkmuvoSaLz6gXbL8-KoaA',
+    appId: '1:851441089572:android:2979be88e52b9a44566cb1',
+    messagingSenderId: '851441089572',
+    projectId: 'techstore-produtos',
+    storageBucket: 'techstore-produtos.firebasestorage.app',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyD1aVkQZTHqNblnB7hPBDaAHw0H6DTZ918',
-    appId: '1:181506422611:ios:9ace98123ee11e2cf453a6',
-    messagingSenderId: '181506422611',
-    projectId: 'techstoren-14ebc',
-    storageBucket: 'techstoren-14ebc.firebasestorage.app',
+    apiKey: 'AIzaSyAygwJ3dLUhRWV4SeS-pz2SYVxdegiSCA8',
+    appId: '1:851441089572:ios:b80f1740a42282ea566cb1',
+    messagingSenderId: '851441089572',
+    projectId: 'techstore-produtos',
+    storageBucket: 'techstore-produtos.firebasestorage.app',
     iosBundleId: 'com.example.appComBanco',
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
-    apiKey: 'AIzaSyD1aVkQZTHqNblnB7hPBDaAHw0H6DTZ918',
-    appId: '1:181506422611:ios:9ace98123ee11e2cf453a6',
-    messagingSenderId: '181506422611',
-    projectId: 'techstoren-14ebc',
-    storageBucket: 'techstoren-14ebc.firebasestorage.app',
+    apiKey: 'AIzaSyAygwJ3dLUhRWV4SeS-pz2SYVxdegiSCA8',
+    appId: '1:851441089572:ios:b80f1740a42282ea566cb1',
+    messagingSenderId: '851441089572',
+    projectId: 'techstore-produtos',
+    storageBucket: 'techstore-produtos.firebasestorage.app',
     iosBundleId: 'com.example.appComBanco',
   );
 
   static const FirebaseOptions windows = FirebaseOptions(
-    apiKey: 'AIzaSyC-uwrTnlYPfVB-bTr-vq2BhUP0Wbw7AXo',
-    appId: '1:181506422611:web:33a53e8d93bc1d5ff453a6',
-    messagingSenderId: '181506422611',
-    projectId: 'techstoren-14ebc',
-    authDomain: 'techstoren-14ebc.firebaseapp.com',
-    storageBucket: 'techstoren-14ebc.firebasestorage.app',
+    apiKey: 'AIzaSyDwIyYU5lmCx5i8qDYugf_AV4cpBgSWf7Q',
+    appId: '1:851441089572:web:caa7549df59da7ff566cb1',
+    messagingSenderId: '851441089572',
+    projectId: 'techstore-produtos',
+    authDomain: 'techstore-produtos.firebaseapp.com',
+    storageBucket: 'techstore-produtos.firebasestorage.app',
   );
 
 }

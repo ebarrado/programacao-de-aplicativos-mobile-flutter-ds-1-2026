@@ -1,15 +1,17 @@
 import 'package:app_com_banco/firebase_options.dart';
-import 'package:app_com_banco/screens/cadastrar_produtos.dart';
+import 'package:app_com_banco/screens/home.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
-void main() async{
+void main() async {
+
   WidgetsFlutterBinding.ensureInitialized();
+
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
-
   );
-  runApp(MainApp());
+
+  runApp(const MainApp());
 }
 
 class MainApp extends StatelessWidget {
@@ -19,7 +21,7 @@ class MainApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return const MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: CadastrarProdutos()
+      home: HomePage(),
     );
   }
 }
