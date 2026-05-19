@@ -76,19 +76,37 @@ class SpotifyScreem extends StatelessWidget {
 
               //Lista de Musicas
               ListTile(
-                leading: Icon(Icons.music_note, color: Colors.white),
-                title: Text(
+                leading: const Icon(Icons.music_note, color: Colors.white),
+
+                title: const Text(
                   "Minha PlayList 1",
+
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                subtitle: Text(
+
+                subtitle: const Text(
                   "Artista Desconhecido",
+
                   style: TextStyle(color: Colors.grey),
                 ),
+
+                trailing: const Icon(
+                  Icons.arrow_forward_ios,
+                  color: Colors.white,
+                  size: 18,
+                ),
+
+                onTap: () {
+                  Navigator.push(
+                    context,
+
+                    MaterialPageRoute(builder: (_) => const PlayListSreen()),
+                  );
+                },
               ),
               ListTile(
                 leading: Icon(Icons.music_note_rounded, color: Colors.white),

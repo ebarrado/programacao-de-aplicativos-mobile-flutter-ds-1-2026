@@ -1,49 +1,54 @@
 import 'dart:convert';
 
 import 'package:app_spotify/src/auth/model/music_model.dart';
-
-import 'package:http/http.dart' as http;
+import 'package:http/http.dart'
+    as http;
 
 class MusicService {
 
   static Future<List<MusicModel>>
       getPlaylistSongs() async {
 
-    final url = Uri.parse(
-      'https://deezerdevs-deezer.p.rapidapi.com/search?q=pop',
-    );
+    try {
 
-    final response = await http.get(
-      url,
+      final url = Uri.parse(
+        'https://itunes.apple.com/search?term=jorge+e+mateus&entity=song&limit=20',
+      );
 
-      headers: {
-        'X-RapidAPI-Key':
-            'SUA_CHAVE_RAPIDAPI',
+      final response =
+          await http.get(url);
 
-        'X-RapidAPI-Host':
-            'deezerdevs-deezer.p.rapidapi.com',
-      },
-    );
+      print(response.body);
 
-    if (response.statusCode == 200) {
+      if (response.statusCode ==
+          200) {
 
-      final data =
-          jsonDecode(response.body);
-
-      final List musics =
-          data['data'];
-
-      return musics.map((music) {
-
-        return MusicModel.fromMap(
-          music,
+        final data =
+            jsonDecode(
+          response.body,
         );
 
-      }).toList();
-    }
+        final List musics =
+            data['results'];
 
-    throw Exception(
-      'Erro ao carregar músicas',
-    );
+        return musics.map((music) {
+
+          return MusicModel.fromMap(
+            music,
+          );
+
+        }).toList();
+      }
+
+      throw Exception(
+        'Erro HTTP',
+      );
+
+    } catch (e) {
+
+      throw Exception(
+        'Erro ao carregar músicas: $e',
+      );
+    }
   }
 }

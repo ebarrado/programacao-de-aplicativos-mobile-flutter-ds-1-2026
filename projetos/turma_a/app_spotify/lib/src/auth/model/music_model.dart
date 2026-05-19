@@ -17,16 +17,17 @@ class MusicModel {
   ) {
 
     return MusicModel(
-      title: map['title'] ?? '',
+      title:
+          map['trackName'] ?? '',
 
       artist:
-          map['artist']?['name'] ?? '',
+          map['artistName'] ?? '',
 
       cover:
-          map['album']?['cover_medium'] ?? '',
+          map['artworkUrl100'] ?? '',
 
       preview:
-          map['preview'] ?? '',
+          map['previewUrl'] ?? '',
     );
   }
 }

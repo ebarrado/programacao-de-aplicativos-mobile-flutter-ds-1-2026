@@ -1,6 +1,6 @@
 import 'package:app_spotify/src/auth/controller/music_service.dart';
 import 'package:app_spotify/src/auth/model/music_model.dart';
-
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 
 class PlayListSreen extends StatefulWidget {
@@ -17,12 +17,82 @@ class _PlayListSreenState
   late Future<List<MusicModel>>
       musicsFuture;
 
+  final AudioPlayer audioPlayer =
+      AudioPlayer();
+
+  String currentMusic = '';
+
+  bool isPlaying = false;
+
   @override
   void initState() {
     super.initState();
 
     musicsFuture =
         MusicService.getPlaylistSongs();
+  }
+
+  @override
+  void dispose() {
+
+    audioPlayer.dispose();
+
+    super.dispose();
+  }
+
+  Future<void> tocarMusica(
+    MusicModel music,
+  ) async {
+
+    try {
+
+      // PAUSAR
+      if (currentMusic ==
+              music.preview &&
+          isPlaying) {
+
+        await audioPlayer.pause();
+
+        setState(() {
+
+          isPlaying = false;
+        });
+
+        return;
+      }
+
+      // TOCAR NOVA
+      await audioPlayer.stop();
+
+      await audioPlayer.play(
+        UrlSource(
+          music.preview,
+        ),
+      );
+
+      setState(() {
+
+        currentMusic =
+            music.preview;
+
+        isPlaying = true;
+      });
+
+    } catch (e) {
+
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(
+        SnackBar(
+          backgroundColor:
+              Colors.red,
+
+          content: Text(
+            'Erro ao tocar música: $e',
+          ),
+        ),
+      );
+    }
   }
 
   @override
@@ -40,6 +110,7 @@ class _PlayListSreenState
           snapshot,
         ) {
 
+          // LOADING
           if (snapshot.connectionState ==
               ConnectionState.waiting) {
 
@@ -51,17 +122,30 @@ class _PlayListSreenState
             );
           }
 
+          // ERROR
           if (snapshot.hasError) {
 
             return Center(
-              child: Text(
-                snapshot.error
-                    .toString(),
+              child: Padding(
+                padding:
+                    const EdgeInsets.all(
+                  20,
+                ),
 
-                style:
-                    const TextStyle(
-                  color:
-                      Colors.white,
+                child: Text(
+                  snapshot.error
+                      .toString(),
+
+                  style:
+                      const TextStyle(
+                    color:
+                        Colors.white,
+
+                    fontSize: 16,
+                  ),
+
+                  textAlign:
+                      TextAlign.center,
                 ),
               ),
             );
@@ -69,6 +153,21 @@ class _PlayListSreenState
 
           final musics =
               snapshot.data ?? [];
+
+          // EMPTY
+          if (musics.isEmpty) {
+
+            return const Center(
+              child: Text(
+                "Nenhuma música encontrada",
+
+                style: TextStyle(
+                  color:
+                      Colors.white,
+                ),
+              ),
+            );
+          }
 
           return CustomScrollView(
             slivers: [
@@ -91,7 +190,7 @@ class _PlayListSreenState
                     children: [
 
                       Image.network(
-                        'https://i.scdn.co/image/ab67706f00000002db4d4c7f2c44e4d9b7b4f6cb',
+                        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSLNUPFiKphlZavWU7RmxhHgYqCA4vv7Vbacg&s',
 
                         fit:
                             BoxFit.cover,
@@ -99,7 +198,7 @@ class _PlayListSreenState
 
                       Container(
                         decoration:
-                            BoxDecoration(
+                            const BoxDecoration(
                           gradient:
                               LinearGradient(
                             begin:
@@ -130,7 +229,7 @@ class _PlayListSreenState
                           children: [
 
                             Text(
-                              "Pop Up",
+                              " Minha PlayList 1",
 
                               style:
                                   TextStyle(
@@ -170,7 +269,7 @@ class _PlayListSreenState
                 ),
               ),
 
-              // LISTA
+              // LISTA DE MUSICAS
               SliverList(
                 delegate:
                     SliverChildBuilderDelegate(
@@ -182,13 +281,18 @@ class _PlayListSreenState
                     final music =
                         musics[index];
 
+                    final tocando =
+                        currentMusic ==
+                                music.preview &&
+                            isPlaying;
+
                     return ListTile(
 
                       leading:
                           ClipRRect(
                         borderRadius:
                             BorderRadius.circular(
-                          4,
+                          6,
                         ),
 
                         child:
@@ -213,6 +317,8 @@ class _PlayListSreenState
 
                           fontWeight:
                               FontWeight.bold,
+
+                          fontSize: 16,
                         ),
                       ),
 
@@ -226,27 +332,21 @@ class _PlayListSreenState
                         ),
                       ),
 
-                      trailing:
-                          const Icon(
-                        Icons.more_vert,
+                      trailing: Icon(
+                        tocando
+                            ? Icons.pause_circle
+                            : Icons.play_circle,
 
                         color:
-                            Colors.white,
+                            Colors.green,
+
+                        size: 34,
                       ),
 
-                      onTap: () {
+                      onTap: () async {
 
-                        ScaffoldMessenger.of(
-                          context,
-                        ).showSnackBar(
-                          SnackBar(
-                            backgroundColor:
-                                Colors.green,
-
-                            content: Text(
-                              "Tocando ${music.title}",
-                            ),
-                          ),
+                        await tocarMusica(
+                          music,
                         );
                       },
                     );
@@ -261,36 +361,84 @@ class _PlayListSreenState
         },
       ),
 
+      // PLAYER BAR
       bottomNavigationBar:
-          BottomNavigationBar(
-        backgroundColor:
-            Colors.black,
+          Container(
+        height: 70,
 
-        selectedItemColor:
-            Colors.green,
+        decoration:
+            BoxDecoration(
+          color:
+              Colors.grey.shade900,
 
-        unselectedItemColor:
-            Colors.white,
-
-        items: const [
-
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: "Inicio",
-          ),
-
-          BottomNavigationBarItem(
-            icon: Icon(Icons.search),
-            label: "Buscar",
-          ),
-
-          BottomNavigationBarItem(
-            icon: Icon(
-              Icons.library_music,
+          border: Border(
+            top: BorderSide(
+              color:
+                  Colors.grey.shade800,
             ),
-            label: "Biblioteca",
           ),
-        ],
+        ),
+
+        child: Row(
+          children: [
+
+            const SizedBox(width: 15),
+
+            Icon(
+              isPlaying
+                  ? Icons.graphic_eq
+                  : Icons.music_note,
+
+              color: Colors.green,
+
+              size: 30,
+            ),
+
+            const SizedBox(width: 15),
+
+            Expanded(
+              child: Text(
+                isPlaying
+                    ? "Tocando Música..."
+                    : "Nenhuma música tocando",
+
+                style:
+                    const TextStyle(
+                  color:
+                      Colors.white,
+
+                  fontSize: 16,
+                ),
+              ),
+            ),
+
+            IconButton(
+              onPressed: () async {
+
+                if (isPlaying) {
+
+                  await audioPlayer.pause();
+
+                  setState(() {
+
+                    isPlaying = false;
+                  });
+                }
+              },
+
+              icon: Icon(
+                isPlaying
+                    ? Icons.pause
+                    : Icons.play_arrow,
+
+                color:
+                    Colors.white,
+              ),
+            ),
+
+            const SizedBox(width: 10),
+          ],
+        ),
       ),
     );
   }
