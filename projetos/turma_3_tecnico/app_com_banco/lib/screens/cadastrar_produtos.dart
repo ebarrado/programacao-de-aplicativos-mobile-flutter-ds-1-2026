@@ -1,378 +1,862 @@
+import 'dart:io';
+
 import 'package:app_com_banco/models/produto.dart';
 import 'package:app_com_banco/service/produto_service.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'package:image_picker/image_picker.dart';
 
 class CadastrarProdutos extends StatefulWidget {
   const CadastrarProdutos({super.key});
 
   @override
-  State<CadastrarProdutos> createState() => _CadastrarProdutosState();
+  State<CadastrarProdutos> createState() =>
+      _CadastrarProdutosState();
 }
 
-class _CadastrarProdutosState extends State<CadastrarProdutos> {
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  final TextEditingController _nomeController = TextEditingController();
-  final TextEditingController _descricaoController = TextEditingController();
-  final TextEditingController _quantidadeController = TextEditingController();
-  final TextEditingController _valorController = TextEditingController();
-  final TextEditingController _imagemController = TextEditingController();
+class _CadastrarProdutosState
+    extends State<CadastrarProdutos> {
 
-  final ProdutoService _produtoService = ProdutoService();
+  // =====================================
+  // FORM
+  // =====================================
+
+  final GlobalKey<FormState> _formKey =
+      GlobalKey<FormState>();
+
+  // =====================================
+  // CONTROLLERS
+  // =====================================
+
+  final TextEditingController
+  _nomeController =
+      TextEditingController();
+
+  final TextEditingController
+  _descricaoController =
+      TextEditingController();
+
+  final TextEditingController
+  _quantidadeController =
+      TextEditingController();
+
+  final TextEditingController
+  _valorController =
+      TextEditingController();
+
+  // =====================================
+  // SERVICES
+  // =====================================
+
+  final ProdutoService _produtoService =
+      ProdutoService();
+
+  final ImagePicker _picker =
+      ImagePicker();
+
+  // =====================================
+  // VARIAVEIS
+  // =====================================
+
+  File? _imagemSelecionada;
 
   bool _carregando = false;
 
+  // =====================================
+  // DISPOSE
+  // =====================================
+
   @override
   void dispose() {
+
     _nomeController.dispose();
+
     _descricaoController.dispose();
+
     _quantidadeController.dispose();
+
     _valorController.dispose();
-    _imagemController.dispose();
+
     super.dispose();
   }
 
-  Future<void> _cadastrarProduto() async {
-    if (!_formKey.currentState!.validate()) return;
-    
-    setState(() {
-      _carregando = true;
-    });
+  // =====================================
+  // CAMERA
+  // =====================================
 
-    final produto = Produto(
-      nome: _nomeController.text.trim(),
-      descricao: _descricaoController.text.trim(),
-      quantidade: int.parse(_quantidadeController.text.trim()),
-      valor: double.parse(_valorController.text.trim().replaceAll(',', '.')),
-      imagem: _imagemController.text.trim(),
+  Future<void> _abrirCamera() async {
+
+    final XFile? foto =
+        await _picker.pickImage(
+
+      source: ImageSource.camera,
+
+      imageQuality: 70,
     );
 
-    final erro = await _produtoService.cadastrarProduto(produto);
+    if (foto != null) {
 
-    if (!mounted) return;
+      setState(() {
 
-    if (erro == null) {
-      ScaffoldMessenger.of(context).showSnackBar(
+        _imagemSelecionada =
+            File(foto.path);
+
+      });
+    }
+  }
+
+  // =====================================
+  // GALERIA
+  // =====================================
+
+  Future<void> _abrirGaleria() async {
+
+    final XFile? imagem =
+        await _picker.pickImage(
+
+      source: ImageSource.gallery,
+
+      imageQuality: 70,
+    );
+
+    if (imagem != null) {
+
+      setState(() {
+
+        _imagemSelecionada =
+            File(imagem.path);
+
+      });
+    }
+  }
+
+  // =====================================
+  // REMOVER IMAGEM
+  // =====================================
+
+  void _removerImagem() {
+
+    setState(() {
+
+      _imagemSelecionada = null;
+
+    });
+  }
+
+  // =====================================
+  // UPLOAD AZURE
+  // =====================================
+
+  Future<String> uploadAzure(
+    File imagem,
+  ) async {
+
+    final bytes =
+        await imagem.readAsBytes();
+
+    final nomeArquivo =
+        "${DateTime.now().millisecondsSinceEpoch}.jpg";
+
+    // =====================================
+    // STORAGE
+    // =====================================
+
+    const storageUrl =
+        "AQUI-COLA-URL-DA-CONTA-ARMAZENAMENTO https://NOMECONTADEARMAZENAMENTO.blob.core.windows.net";
+    //NOME DO CONTAINER
+    const container =
+        "produtos";
+
+    // =====================================
+    // SAS TOKEN
+    // =====================================
+
+    const sasToken =
+        "AQUI-COLE-A-CHAVE-SAS-URL-GERADA-A-PARTIR-DO-SP";
+
+    // =====================================
+    // URL FINAL
+    // =====================================
+
+    final url = Uri.parse(
+      "$storageUrl/$container/$nomeArquivo?$sasToken",
+    );
+
+    final response =
+        await http.put(
+
+      url,
+
+      headers: {
+
+        "x-ms-blob-type":
+            "BlockBlob",
+
+        "Content-Type":
+            "image/jpeg",
+      },
+
+      body: bytes,
+    );
+
+    debugPrint(
+      "STATUS: ${response.statusCode}",
+    );
+
+    debugPrint(
+      "BODY: ${response.body}",
+    );
+
+    if (response.statusCode == 201) {
+
+      return
+          "$storageUrl/$container/$nomeArquivo";
+    }
+
+    throw Exception(
+      "Erro upload Azure",
+    );
+  }
+
+  // =====================================
+  // CADASTRAR PRODUTO
+  // =====================================
+
+  Future<void>
+  _cadastrarProduto() async {
+
+    if (!_formKey.currentState!
+        .validate()) return;
+
+    if (_imagemSelecionada == null) {
+
+      ScaffoldMessenger.of(context)
+          .showSnackBar(
+
         const SnackBar(
-          content: Text('Produto Cadastrado com sucesso'),
-          backgroundColor: Colors.green,
+
+          content: Text(
+            "Selecione uma imagem",
+          ),
+
+          backgroundColor:
+              Colors.red,
         ),
       );
-      _limparCampos();
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(erro), backgroundColor: Colors.red),
-      );
+
+      return;
     }
-    
+
     setState(() {
-      _carregando = false;
+
+      _carregando = true;
+
+    });
+
+    try {
+
+      // =====================================
+      // UPLOAD IMAGEM AZURE
+      // =====================================
+
+      final imageUrl =
+          await uploadAzure(
+        _imagemSelecionada!,
+      );
+
+      // =====================================
+      // CRIAR PRODUTO
+      // =====================================
+
+      final produto = Produto(
+
+        nome:
+            _nomeController.text
+                .trim(),
+
+        descricao:
+            _descricaoController
+                .text
+                .trim(),
+
+        quantidade: int.parse(
+          _quantidadeController
+              .text
+              .trim(),
+        ),
+
+        valor: double.parse(
+
+          _valorController.text
+
+              .trim()
+
+              .replaceAll(',', '.'),
+        ),
+
+        imagem: imageUrl,
+      );
+
+      // =====================================
+      // SALVAR FIRESTORE
+      // =====================================
+
+      final erro =
+          await _produtoService
+              .cadastrarProduto(
+        produto,
+      );
+
+      if (!mounted) return;
+
+      if (erro == null) {
+
+        ScaffoldMessenger.of(context)
+            .showSnackBar(
+
+          const SnackBar(
+
+            content: Text(
+              "Produto cadastrado com sucesso",
+            ),
+
+            backgroundColor:
+                Colors.green,
+          ),
+        );
+
+        _limparCampos();
+
+      } else {
+
+        ScaffoldMessenger.of(context)
+            .showSnackBar(
+
+          SnackBar(
+
+            content: Text(erro),
+
+            backgroundColor:
+                Colors.red,
+          ),
+        );
+      }
+
+    } catch (e) {
+
+      debugPrint(
+        "ERRO: $e",
+      );
+
+      ScaffoldMessenger.of(context)
+          .showSnackBar(
+
+        SnackBar(
+
+          content: Text(
+            "Erro: $e",
+          ),
+
+          backgroundColor:
+              Colors.red,
+        ),
+      );
+
+    } finally {
+
+      setState(() {
+
+        _carregando = false;
+
+      });
+    }
+  }
+
+  // =====================================
+  // LIMPAR CAMPOS
+  // =====================================
+
+  void _limparCampos() {
+
+    _nomeController.clear();
+
+    _descricaoController.clear();
+
+    _quantidadeController.clear();
+
+    _valorController.clear();
+
+    setState(() {
+
+      _imagemSelecionada = null;
+
     });
   }
 
-  void _limparCampos() {
-    _nomeController.clear();
-    _descricaoController.clear();
-    _quantidadeController.clear();
-    _valorController.clear();
-    _imagemController.clear();
-  }
-
-  InputDecoration _buildInputDecoration({
-    required String label,
-    required String hint,
-    required IconData icon,
-  }) {
-    return InputDecoration(
-      labelText: label,
-      hintText: hint,
-      prefixIcon: Icon(icon),
-      border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
-    );
-  }
+  // =====================================
+  // BUILD
+  // =====================================
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
-       appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(90),
 
-        child: AppBar(
-          elevation: 0,
-          backgroundColor: Colors.transparent,
-          automaticallyImplyLeading: false,
+      appBar: AppBar(
 
-          flexibleSpace: Container(
-            decoration: const BoxDecoration(
-              gradient: LinearGradient(
-                colors: [
-                  Color(0xff0f2027),
-                  Color(0xff203a43),
-                  Color(0xff2c5364),
-                ],
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-              ),
+        title: const Text(
+          "Cadastrar Produto",
+        ),
 
-              borderRadius: BorderRadius.only(
-                bottomLeft: Radius.circular(30),
-                bottomRight: Radius.circular(30),
-              ),
-            ),
+        backgroundColor:
+            const Color(
+          0xff2c5364,
+        ),
 
-            child: SafeArea(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 20,
-                ),
+        foregroundColor:
+            Colors.white,
+      ),
 
-                child: Row(
+      body: _carregando
+
+          ? const Center(
+              child:
+                  CircularProgressIndicator(),
+            )
+
+          : SingleChildScrollView(
+
+              padding:
+                  const EdgeInsets
+                      .all(16),
+
+              child: Form(
+
+                key: _formKey,
+
+                child: Column(
+
                   children: [
 
-                    // ÍCONE
-                    Container(
-                      padding: const EdgeInsets.all(12),
+                    // =====================================
+                    // IMAGEM
+                    // =====================================
 
-                      decoration: BoxDecoration(
-                        color: Colors.white.withOpacity(0.15),
+                    _imagemSelecionada !=
+                            null
 
-                        borderRadius:
-                            BorderRadius.circular(15),
-                      ),
+                        ? Stack(
 
-                     child: IconButton(
-                        onPressed: () {
-                          Navigator.popUntil(context, (route) => route.isFirst);
-                        },
-                        icon: Icon(Icons.shopping_bag),
-                        color: Colors.white,
-                        iconSize: 30,
-                       
-                      ),
-                    ),
+                            children: [
 
-                    const SizedBox(width: 15),
+                              ClipRRect(
 
-                    // TEXTO
-                    const Expanded(
-                      child: Column(
-                        mainAxisAlignment:
-                            MainAxisAlignment.center,
+                                borderRadius:
+                                    BorderRadius
+                                        .circular(
+                                            12),
 
-                        crossAxisAlignment:
-                            CrossAxisAlignment.start,
+                                child:
+                                    Image.file(
 
-                        children: [
+                                  _imagemSelecionada!,
 
-                          Text(
-                            "Cadastrar Produtos",
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 16,
-                              fontWeight:
-                                  FontWeight.bold,
+                                  height:
+                                      220,
+
+                                  width: double
+                                      .infinity,
+
+                                  fit: BoxFit
+                                      .cover,
+                                ),
+                              ),
+
+                              Positioned(
+
+                                right: 10,
+
+                                top: 10,
+
+                                child:
+                                    CircleAvatar(
+
+                                  backgroundColor:
+                                      Colors
+                                          .black54,
+
+                                  child:
+                                      IconButton(
+
+                                    onPressed:
+                                        _removerImagem,
+
+                                    icon:
+                                        const Icon(
+                                      Icons.close,
+                                      color: Colors
+                                          .white,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          )
+
+                        : Container(
+
+                            height: 220,
+
+                            width: double
+                                .infinity,
+
+                            decoration:
+                                BoxDecoration(
+
+                              color: Colors
+                                  .grey[300],
+
+                              borderRadius:
+                                  BorderRadius
+                                      .circular(
+                                          12),
+                            ),
+
+                            child:
+                                const Center(
+
+                              child: Icon(
+                                Icons.image,
+                                size: 80,
+                              ),
                             ),
                           ),
 
-                          SizedBox(height: 4),
+                    const SizedBox(
+                        height: 20),
 
-                          Text(
-                            "Sua loja de tecnologia",
-                            style: TextStyle(
-                              color: Colors.white70,
-                              fontSize: 14,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
+                    // =====================================
+                    // BOTOES IMAGEM
+                    // =====================================
 
-                    // BOTÕES
                     Row(
+
                       children: [
 
-                        IconButton(
-                          onPressed: () {},
+                        Expanded(
 
-                          icon: const Icon(
-                            Icons.notifications_none,
-                            color: Colors.white,
-                            size: 28,
+                          child:
+                              ElevatedButton
+                                  .icon(
+
+                            style:
+                                ElevatedButton
+                                    .styleFrom(
+
+                              backgroundColor:
+                                  Colors.blue,
+                            ),
+
+                            onPressed:
+                                _abrirCamera,
+
+                            icon:
+                                const Icon(
+                              Icons
+                                  .camera_alt,
+                            ),
+
+                            label:
+                                const Text(
+                              "Camera",
+                            ),
                           ),
                         ),
 
-                        IconButton(
-                          onPressed: () {},
+                        const SizedBox(
+                            width: 10),
 
-                          icon: const Icon(
-                            Icons.person_outline,
-                            color: Colors.white,
-                            size: 28,
+                        Expanded(
+
+                          child:
+                              ElevatedButton
+                                  .icon(
+
+                            style:
+                                ElevatedButton
+                                    .styleFrom(
+
+                              backgroundColor:
+                                  Colors.orange,
+                            ),
+
+                            onPressed:
+                                _abrirGaleria,
+
+                            icon:
+                                const Icon(
+                              Icons.photo,
+                            ),
+
+                            label:
+                                const Text(
+                              "Galeria",
+                            ),
                           ),
                         ),
                       ],
+                    ),
+
+                    const SizedBox(
+                        height: 20),
+
+                    // =====================================
+                    // NOME
+                    // =====================================
+
+                    TextFormField(
+
+                      controller:
+                          _nomeController,
+
+                      decoration:
+                          InputDecoration(
+
+                        labelText:
+                            "Nome Produto",
+
+                        prefixIcon:
+                            const Icon(
+                          Icons
+                              .shopping_bag,
+                        ),
+
+                        border:
+                            OutlineInputBorder(
+
+                          borderRadius:
+                              BorderRadius
+                                  .circular(
+                                      12),
+                        ),
+                      ),
+
+                      validator:
+                          (value) {
+
+                        if (value ==
+                                null ||
+                            value
+                                .isEmpty) {
+
+                          return "Informe o nome";
+                        }
+
+                        return null;
+                      },
+                    ),
+
+                    const SizedBox(
+                        height: 20),
+
+                    // =====================================
+                    // DESCRICAO
+                    // =====================================
+
+                    TextFormField(
+
+                      controller:
+                          _descricaoController,
+
+                      maxLines: 3,
+
+                      decoration:
+                          InputDecoration(
+
+                        labelText:
+                            "Descricao",
+
+                        prefixIcon:
+                            const Icon(
+                          Icons
+                              .description,
+                        ),
+
+                        border:
+                            OutlineInputBorder(
+
+                          borderRadius:
+                              BorderRadius
+                                  .circular(
+                                      12),
+                        ),
+                      ),
+
+                      validator:
+                          (value) {
+
+                        if (value ==
+                                null ||
+                            value
+                                .isEmpty) {
+
+                          return "Informe a descricao";
+                        }
+
+                        return null;
+                      },
+                    ),
+
+                    const SizedBox(
+                        height: 20),
+
+                    // =====================================
+                    // QUANTIDADE
+                    // =====================================
+
+                    TextFormField(
+
+                      controller:
+                          _quantidadeController,
+
+                      keyboardType:
+                          TextInputType
+                              .number,
+
+                      decoration:
+                          InputDecoration(
+
+                        labelText:
+                            "Quantidade",
+
+                        prefixIcon:
+                            const Icon(
+                          Icons.numbers,
+                        ),
+
+                        border:
+                            OutlineInputBorder(
+
+                          borderRadius:
+                              BorderRadius
+                                  .circular(
+                                      12),
+                        ),
+                      ),
+
+                      validator:
+                          (value) {
+
+                        if (value ==
+                                null ||
+                            value
+                                .isEmpty) {
+
+                          return "Informe a quantidade";
+                        }
+
+                        return null;
+                      },
+                    ),
+
+                    const SizedBox(
+                        height: 20),
+
+                    // =====================================
+                    // VALOR
+                    // =====================================
+
+                    TextFormField(
+
+                      controller:
+                          _valorController,
+
+                      keyboardType:
+                          TextInputType
+                              .number,
+
+                      decoration:
+                          InputDecoration(
+
+                        labelText:
+                            "Valor",
+
+                        prefixIcon:
+                            const Icon(
+                          Icons
+                              .monetization_on,
+                        ),
+
+                        border:
+                            OutlineInputBorder(
+
+                          borderRadius:
+                              BorderRadius
+                                  .circular(
+                                      12),
+                        ),
+                      ),
+
+                      validator:
+                          (value) {
+
+                        if (value ==
+                                null ||
+                            value
+                                .isEmpty) {
+
+                          return "Informe o valor";
+                        }
+
+                        return null;
+                      },
+                    ),
+
+                    const SizedBox(
+                        height: 30),
+
+                    // =====================================
+                    // BOTAO
+                    // =====================================
+
+                    SizedBox(
+
+                      width:
+                          double.infinity,
+
+                      height: 55,
+
+                      child:
+                          ElevatedButton(
+
+                        style:
+                            ElevatedButton
+                                .styleFrom(
+
+                          backgroundColor:
+                              const Color(
+                            0xff2c5364,
+                          ),
+
+                          foregroundColor:
+                              Colors.white,
+                        ),
+
+                        onPressed:
+                            _cadastrarProduto,
+
+                        child:
+                            const Text(
+
+                          "Cadastrar Produto",
+
+                          style: TextStyle(
+                            fontSize: 18,
+                          ),
+                        ),
+                      ),
                     ),
                   ],
-                ),
-              ),
-            ),
-          ),
-        ),
-      ),
-      body: _carregando
-          ? const Center(child: CircularProgressIndicator())
-          : SingleChildScrollView(
-              padding: const EdgeInsets.all(16),
-              child: Card(
-                elevation: 6,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(18),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(16),
-                  child: Form(
-                    key: _formKey,
-                    child: Column(
-                      children: [
-                        Icon(Icons.inventory_2, size: 70, color:const Color.fromARGB(255, 40, 68, 73),),
-                        const SizedBox(height: 10),
-                        const Text(
-                          "Preencha os dados do Produto",
-                          style: TextStyle(
-                              fontSize: 18, fontWeight: FontWeight.bold),
-                        ),
-                        const SizedBox(height: 20),
-                        TextFormField(
-                          controller: _nomeController,
-                          decoration: InputDecoration(
-                            labelText: "Nome Produto",
-                            hintText: "Exemplo: Notebook Gamer",
-                            prefixIcon: const Icon(Icons.shopping_bag),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                          ),
-                          validator: (value) {
-                            if (value == null || value.trim().isEmpty) {
-                              return "Informe o nome do produto";
-                            }
-                            if (value.trim().length < 3) {
-                              return "O nome do produto deve ter mais de 3 caracteres";
-                            }
-                            return null;
-                          },
-                        ),
-                        const SizedBox(height: 20),
-                        TextFormField(
-                          controller: _descricaoController,
-                          decoration: InputDecoration(
-                            labelText: "Descrição do Produto",
-                            hintText: "Exemplo: Notebook com 16GB RAM",
-                            prefixIcon: const Icon(Icons.description),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                          ),
-                          validator: (value) {
-                            if (value == null || value.trim().isEmpty) {
-                              return "Informe a descrição do produto";
-                            }
-                            if (value.trim().length < 3) {
-                              return "A descrição do produto deve ter mais de 3 caracteres";
-                            }
-                            return null;
-                          },
-                        ),
-                        const SizedBox(height: 20),
-                        TextFormField(
-                          controller: _quantidadeController,
-                          keyboardType: TextInputType.number,
-                          decoration: InputDecoration(
-                            labelText: "QTD Produto",
-                            hintText: "Exemplo: 10",
-                            prefixIcon: const Icon(Icons.numbers),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                          ),
-                          validator: (value) {
-                            if (value == null || value.trim().isEmpty) {
-                              return "Informe a quantidade de produtos";
-                            }
-                            if (int.tryParse(value.trim()) == null) {
-                              return "Informe um número válido";
-                            }
-                            if (int.parse(value.trim()) < 1) {
-                              return "A quantidade deve ser pelo menos 1";
-                            }
-                            return null;
-                          },
-                        ),
-                        const SizedBox(height: 20),
-                        TextFormField(
-                          controller: _valorController,
-                          keyboardType: TextInputType.number,
-                          decoration: InputDecoration(
-                            labelText: "Valor do Produto",
-                            hintText: "Exemplo: 3500,90",
-                            prefixIcon: const Icon(Icons.monetization_on),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                          ),
-                          validator: (value) {
-                            if (value == null || value.trim().isEmpty) {
-                              return "Informe o valor do produto";
-                            }
-                            final valorStr = value.trim().replaceAll(',', '.');
-                            if (double.tryParse(valorStr) == null) {
-                              return "Informe um valor válido";
-                            }
-                            if (double.parse(valorStr) < 0.01) {
-                              return "O valor do produto deve ser maior que 0";
-                            }
-                            return null;
-                          },
-                        ),
-                        const SizedBox(height: 20),
-                        TextFormField(
-                          controller: _imagemController,
-                          decoration: InputDecoration(
-                            labelText: "Imagem do Produto",
-                            hintText: "Exemplo: URL da imagem",
-                            prefixIcon: const Icon(Icons.image),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                          ),
-                          validator: (value) {
-                            if (value == null || value.trim().isEmpty) {
-                              return "Informe a URL da imagem do produto";
-                            }
-                            if (value.trim().length < 3) {
-                              return "A URL do produto deve ter mais de 3 caracteres";
-                            }
-                            return null;
-                          },
-                        ),
-                        const SizedBox(height: 16),
-                        ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: const Color.fromARGB(255, 40, 68, 73),
-                            foregroundColor: Colors.white,
-                            minimumSize: const Size(double.infinity, 50),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                          ),
-                          onPressed: _cadastrarProduto,
-                          child: const Text(
-                            "Cadastrar",
-                            style: TextStyle(fontSize: 16),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
                 ),
               ),
             ),
